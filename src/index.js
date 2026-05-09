@@ -3,13 +3,17 @@ function MyArray(...items) {
 }
 
 MyArray.prototype.reduceRight = function (callback, initialValue) {
-    if (!this.items && !initialValue) throw new TypeError;
+    if(typeof callback !== 'function')
+        throw new TypeError('Callback must be a function!');
+    
+    if(this.items.length === 0 && arguments.length < 2)
+        throw new TypeError('Reduce of empty array with no initial value');
 
     const arr = this.items;
     let accumulator;
     let startIndex;
 
-    if (initialValue) {
+    if (arguments.length > 1) {
         accumulator = initialValue;
         startIndex = arr.length - 1;
     }
