@@ -1,35 +1,38 @@
 function MyArray(...items) {
-    this.items = items;
+    this.length = 0;
+
+    for (let i = 0; i < items.length; i++) {
+        this[i] = items[i];
+        this.length++;
+    }
 }
 
 MyArray.prototype.reduceRight = function (callback, initialValue) {
-    if(typeof callback !== 'function')
-        throw new TypeError('Callback must be a function!');
-    
-    if(this.items.length === 0 && arguments.length < 2)
-        throw new TypeError('Reduce of empty array with no initial value');
+    if (typeof callback !== 'function')
+        throw new TypeError;
+    if (this.length === 0 && arguments.length < 2)
+        throw new TypeError;
 
-    const arr = this.items;
     let accumulator;
     let startIndex;
 
     if (arguments.length > 1) {
         accumulator = initialValue;
-        startIndex = arr.length - 1;
+        startIndex = this.length - 1;
     }
     else {
-        accumulator = arr[arr.length - 1];
-        startIndex = arr.length - 2;
+        accumulator = this[this.length - 1];
+        startIndex = this.length - 2;
     }
 
     for (let i = startIndex; i >= 0; i--)
-        accumulator = callback(accumulator, arr[i], i, arr);
+        accumulator = callback(accumulator, this[i], i, this);
     return accumulator;
 }
 
 const arr = new MyArray(1, 2, 3, 4);
-const result = arr.reduceRight((acc, current) => {
-    return acc + current;
+const result = arr.reduceRight((acc, curr) => {
+    return acc + curr;
 })
 
 console.log(result);
